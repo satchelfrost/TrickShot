@@ -52,7 +52,7 @@ void ATrickShotProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 		ATrickShotCharacter* MyPawn = Cast<ATrickShotCharacter>(OtherActor);
 		if (MyPawn) {
 			Destroy();
-			UE_LOG(LogTemp, Warning, TEXT("Ball destroyed because of overlap"))
+			UE_LOG(LogTemp, Warning, TEXT("Ball destroyed because of player overlap"))
 			return;
 		}
 
