@@ -77,5 +77,8 @@ DerivedDataCache/*
 # HDRI Starter Content
 Content/StarterContent/HDRI/*
 
-# diff files
+# .diff files
 *.diff
+
+# Daily Project Notes 
+TrickShotProjectNotes.txt
