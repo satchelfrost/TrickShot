@@ -73,3 +73,9 @@ Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+# HDRI Starter Content
+Content/StarterContent/HDRI/*
+
+# diff files
+*.diff
