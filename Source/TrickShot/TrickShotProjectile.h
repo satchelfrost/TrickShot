@@ -42,6 +42,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
 	float NoiseCancelTimeThreshold;
 
+	// Used for time in between bounces
 	std::chrono::steady_clock::time_point OnHitPreviousCall;
 };
 
