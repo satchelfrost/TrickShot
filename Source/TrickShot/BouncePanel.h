@@ -7,7 +7,6 @@
 #include "BouncePanel.generated.h"
 
 class UBoxComponent;
-//class UMaterialInterface;
 
 UCLASS()
 class TRICKSHOT_API ABouncePanel : public AActor
@@ -18,19 +17,16 @@ public:
 	// Sets default values for this actor's properties
 	ABouncePanel();
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gameplay")
 	bool bPanelSetReset;
 
 protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UBoxComponent* OverlapComp;
 
-	UPROPERTY(VisibleAnywhere, Category = "Components")
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	UStaticMeshComponent* MeshComp;
-
-//	UPROPERTY(EditDefaultsOnly, Category = "Materials")
-//	UMaterialInterface* Material;
-
-
 
 	UFUNCTION()
     void HandleOverlap(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);

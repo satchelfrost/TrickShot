@@ -4,7 +4,6 @@
 #include "BouncePanel.h"
 #include "Components/BoxComponent.h"
 #include "TrickShotProjectile.h"
-#include "Materials/MaterialInterface.h"
 
 // Sets default values
 ABouncePanel::ABouncePanel()
@@ -14,19 +13,15 @@ ABouncePanel::ABouncePanel()
 
 	// Initialize the overlap component
 	OverlapComp = CreateDefaultSubobject<UBoxComponent>(TEXT("OverlapComp"));
-	//OverlapComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	//OverlapComp->SetCollisionResponseToAllChannels(ECR_Ignore);
-	//OverlapComp->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	OverlapComp->SetBoxExtent(FVector(200.0f, 200.0f, 50.0f));
-	OverlapComp->SetHiddenInGame(false);
+	OverlapComp->SetHiddenInGame(true);
 	RootComponent = OverlapComp;
 	OverlapComp->OnComponentHit.AddDynamic(this, &ABouncePanel::HandleOverlap);
 
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
 	MeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	MeshComp->SetupAttachment(OverlapComp);
-	//MeshComp->SetMaterial(0, Material);
-		
+
 }
 
 

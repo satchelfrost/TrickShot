@@ -63,7 +63,6 @@ void ATrickShotProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 		if (ElapsedTime > NoiseCancelTimeThreshold) // Prevents tons of bouncy noises
 			UGameplayStatics::PlaySound2D(this, PingPongSound);
 		OnHitPreviousCall = OnHitCurrentCall;
-		
 	}
 }
 
