@@ -11,6 +11,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "MotionControllerComponent.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
+#include "BouncePanel.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
@@ -164,6 +165,14 @@ void ATrickShotCharacter::OnFire()
 
 				// spawn the projectile at the muzzle
 				World->SpawnActor<ATrickShotProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+
+				// Reset all bounce panels after shot is fired
+				TArray<AActor*> Actors;
+				UGameplayStatics::GetAllActorsOfClass(GetWorld(), ABouncePanel::StaticClass(), Actors);
+				for (auto Actor : Actors) {
+					ABouncePanel* Panel = Cast<ABouncePanel>(Actor);
+					Panel->bPanelSetReset = false;
+				}
 			}
 		}
 	}
