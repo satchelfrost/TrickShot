@@ -13,7 +13,7 @@ AGoal::AGoal()
 	// Initialize the overlap component
 	OverlapComp = CreateDefaultSubobject<UBoxComponent>(TEXT("OverlapComp"));
 	OverlapComp->SetBoxExtent(FVector(200.0f, 200.0f, 50.0f));
-	OverlapComp->SetHiddenInGame(false);
+	OverlapComp->SetHiddenInGame(true);
 	//OverlapComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	RootComponent = OverlapComp;
 	OverlapComp->OnComponentHit.AddDynamic(this, &AGoal::HandleOverlap);
@@ -41,10 +41,8 @@ void AGoal::HandleOverlap(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 			PanelReady++;
 	}
 
-	if (PanelReady == 3) { // Hard code is very temporary
-		UE_LOG(LogTemp, Warning, TEXT("You Won!"))
-	} else  {
-		UE_LOG(LogTemp, Warning, TEXT("You didn't hit all the panels."))
-		// later remember to reset bPanelSet for all panels
-	}
+	if (PanelReady == Actors.Num())
+		UGameplayStatics::PlaySound2D(this, GoalComplete);
+	else 
+		UGameplayStatics::PlaySound2D(this, GoalIncomplete);
 }

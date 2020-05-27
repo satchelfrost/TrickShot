@@ -26,4 +26,10 @@ public:
 protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UBoxComponent* OverlapComp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
+	USoundBase* GoalComplete;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
+	USoundBase* GoalIncomplete;
 };
