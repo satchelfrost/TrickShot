@@ -6,6 +6,7 @@
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "TrickShotCharacter.h"
+#include "Goal.h"
 
 ATrickShotProjectile::ATrickShotProjectile() 
 {
@@ -13,7 +14,7 @@ ATrickShotProjectile::ATrickShotProjectile()
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
 	CollisionComp->InitSphereRadius(5.0f);
 	CollisionComp->BodyInstance.SetCollisionProfileName("Projectile");
-	CollisionComp->OnComponentHit.AddDynamic(this, &ATrickShotProjectile::OnHit);		// set up a notification for when this component hits something blocking
+	CollisionComp->OnComponentHit.AddDynamic(this, &ATrickShotProjectile::OnHit);
 
 	// Players can't walk on it
 	CollisionComp->SetWalkableSlopeOverride(FWalkableSlopeOverride(WalkableSlope_Unwalkable, 0.f));
@@ -49,10 +50,18 @@ void ATrickShotProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 			OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
 
 		// If projectile hits the player destroy
-		ATrickShotCharacter* MyPawn = Cast<ATrickShotCharacter>(OtherActor);
-		if (MyPawn) {
+		ATrickShotCharacter* Player = Cast<ATrickShotCharacter>(OtherActor);
+		if (Player) {
 			Destroy();
 			UE_LOG(LogTemp, Warning, TEXT("Ball destroyed because of player overlap"))
+			return;
+		}
+
+		// If projectile his the goal then destroy and return;	
+		AGoal* Goal = Cast<AGoal>(OtherActor);
+		if (Goal) {
+			Destroy();
+			UE_LOG(LogTemp, Warning, TEXT("Ball destroyed because of goal overlap"))
 			return;
 		}
 
