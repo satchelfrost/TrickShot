@@ -4,6 +4,8 @@
 #include "Goal.h"
 #include "Components/BoxComponent.h"
 #include "TrickShotProjectile.h"
+#include "BouncePanel.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AGoal::AGoal()
@@ -26,5 +28,23 @@ void AGoal::HandleOverlap(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 	ATrickShotProjectile* ball = Cast<ATrickShotProjectile>(OtherActor);
 	if (ball) {
 		UE_LOG(LogTemp, Warning, TEXT("Ball has landed"))
+	}
+
+	// Get all of the bounce panels
+	TArray<AActor*> Actors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ABouncePanel::StaticClass(), Actors);
+	int PanelReady = 0;
+
+	for (auto Actor : Actors) {
+		ABouncePanel* Panel = Cast<ABouncePanel>(Actor);
+		if (Panel && Panel->bPanelSetReset)
+			PanelReady++;
+	}
+
+	if (PanelReady == 3) { // Hard code is very temporary
+		UE_LOG(LogTemp, Warning, TEXT("You Won!"))
+	} else  {
+		UE_LOG(LogTemp, Warning, TEXT("You didn't hit all the panels."))
+		// later remember to reset bPanelSet for all panels
 	}
 }
