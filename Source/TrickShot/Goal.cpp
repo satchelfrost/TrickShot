@@ -6,6 +6,7 @@
 #include "TrickShotProjectile.h"
 #include "BouncePanel.h"
 #include "Kismet/GameplayStatics.h"
+#include "TrickShotGameMode.h"
 
 // Sets default values
 AGoal::AGoal()
@@ -41,8 +42,14 @@ void AGoal::HandleOverlap(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 			PanelReady++;
 	}
 
-	if (PanelReady == Actors.Num())
+	if (PanelReady == Actors.Num()) {
 		UGameplayStatics::PlaySound2D(this, GoalComplete);
-	else 
+		ATrickShotGameMode* GM = Cast<ATrickShotGameMode>(GetWorld()->GetAuthGameMode());
+		if (GM)
+			GM->CompleteLevel();
+		else
+			UE_LOG(LogTemp, Warning, TEXT("GM is nullptr"))
+	} else {
 		UGameplayStatics::PlaySound2D(this, GoalIncomplete);
+	}
 }
