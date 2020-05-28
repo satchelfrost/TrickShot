@@ -62,6 +62,7 @@ void ATrickShotProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 		if (Goal) {
 			Destroy();
 			UE_LOG(LogTemp, Warning, TEXT("Ball destroyed because of goal overlap"))
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Explosion, GetActorLocation());
 			return;
 		}
 

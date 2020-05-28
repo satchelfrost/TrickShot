@@ -7,6 +7,8 @@
 #include "GameFramework/Actor.h"
 #include "TrickShotProjectile.generated.h"
 
+class UParticleSystem;
+
 UCLASS(config=Game)
 class ATrickShotProjectile : public AActor
 {
@@ -38,6 +40,9 @@ public:
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
 	USoundBase* PingPongSound;
+
+	UPROPERTY(EditDefaultsOnly, Category = "FX")
+	UParticleSystem* Explosion;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
 	float NoiseCancelTimeThreshold;
