@@ -13,6 +13,12 @@ class ATrickShotGameMode : public AGameModeBase
 
 public:
 	ATrickShotGameMode();
+
+	void CompleteLevel();
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Spectating")
+	TSubclassOf<AActor> SpectatingViewpointClass;
 };
 
 
