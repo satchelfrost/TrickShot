@@ -20,15 +20,6 @@ ATrickShotGameMode::ATrickShotGameMode()
 
 void ATrickShotGameMode::CompleteLevel()
 {
-		//APlayerController* PC = Cast<APlayerController>(GetWorld()->GetFirstPlayerController());
-		//if (PC) {
-		//	UE_LOG(LogTemp, Warning, TEXT("PC is not nullptr"))
-		//	APawn* MyPawn = PC->GetPawn();
-		//	if (MyPawn)
-		//		MyPawn->DisableInput(PC);
-		//} else {
-		//	UE_LOG(LogTemp, Warning, TEXT("PC is nullptr"))
-		//}
 	if (SpectatingViewpointClass) {
 		TArray<AActor*> ReturnedActors;
 		UGameplayStatics::GetAllActorsOfClass(this, SpectatingViewpointClass, ReturnedActors);
@@ -36,13 +27,18 @@ void ATrickShotGameMode::CompleteLevel()
 			AActor* NewViewTarget = ReturnedActors[0];
 			APlayerController* PC = Cast<APlayerController>(GetWorld()->GetFirstPlayerController());
 			if (PC) {
-				UE_LOG(LogTemp, Warning, TEXT("PC is not nullptr"))
+				// Disable input
+				APawn* MyPawn = PC->GetPawn();
+				if (MyPawn)
+					MyPawn->DisableInput(PC);
+				// Change viewport to secondary camera (i.e. not first person)
 				PC->SetViewTargetWithBlend(NewViewTarget, 2.0f, EViewTargetBlendFunction::VTBlend_Cubic);
+				OnGoalCompleted();
 			} else {
 				UE_LOG(LogTemp, Warning, TEXT("PC is nullptr"))
 			}
 		}
 	} else {
-		UE_LOG(LogTemp, Warning, TEXT("SpectatingViewpointClass is nullptr"))
+		UE_LOG(LogTemp, Warning, TEXT("SpectatingViewpointClass is nullptr."))
 	}
 }
