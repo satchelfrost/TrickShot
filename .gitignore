@@ -82,3 +82,12 @@ Content/StarterContent/HDRI/*
 
 # Daily Project Notes 
 TrickShotProjectNotes.txt
+
+# No idea what this folder is for so I will ignore it
+Content/Developers/*
+
+# Application build
+WindowsNoEditor/*
+
+# Extra assets I was just testing out
+Content/TwinmotionMaterials
