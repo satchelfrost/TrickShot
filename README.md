@@ -1,4 +1,4 @@
 # TrickShot HotShot
 A game where you attempt crazy trick shots with a monsterous ping pong ball!
 
-![](GamePics/GamePic.PNG)
+![](GamePics/GamePic.png)
