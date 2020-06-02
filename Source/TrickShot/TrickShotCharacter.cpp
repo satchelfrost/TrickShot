@@ -83,6 +83,12 @@ ATrickShotCharacter::ATrickShotCharacter()
 
 	// Uncomment the following line to turn motion controllers on by default:
 	//bUsingMotionControllers = true;
+
+	// Scales the velocity of the projectile
+	VelocityScalar = 0;
+
+	// Set gun velocity to charging initially
+	bVelocityCharging = true;
 }
 
 void ATrickShotCharacter::BeginPlay()
@@ -119,7 +125,7 @@ void ATrickShotCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	// Bind fire event
-	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ATrickShotCharacter::OnFire);
+	PlayerInputComponent->BindAction("Fire", IE_Released, this, &ATrickShotCharacter::OnFire);
 
 	// Enable touchscreen input
 	EnableTouchscreenMovement(PlayerInputComponent);
@@ -137,6 +143,37 @@ void ATrickShotCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 	PlayerInputComponent->BindAxis("TurnRate", this, &ATrickShotCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &ATrickShotCharacter::LookUpAtRate);
+}
+
+void ATrickShotCharacter::LeftMouseButtonPressed()
+{
+	// Increment or decrement the velocity scalar
+	if (bVelocityCharging) {
+		VelocityScalar += 0.05;
+		if (VelocityScalar > 1.01) {
+			VelocityScalar = 1.0;
+			bVelocityCharging = false;
+		}
+	} else {
+		VelocityScalar -= 0.05;
+		if (VelocityScalar < 0.01) {
+			VelocityScalar = 0.0;
+			bVelocityCharging = true;
+		}
+	}
+
+	// Log that to the console
+	//UE_LOG(LogTemp, Warning, TEXT("Velocity scalar: %f"), VelocityScalar)
+
+	// If left mouse button down call delay for 0.2 seconds, and start over
+	APlayerController* PC = Cast<APlayerController>(GetWorld()->GetFirstPlayerController());
+	if (PC->IsInputKeyDown(EKeys::LeftMouseButton)) {
+		UpdateProgressBar();
+		GetWorld()->GetTimerManager().ClearTimer(TimerHandle_VelocityCharge);
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle_VelocityCharge, this, &ATrickShotCharacter::LeftMouseButtonPressed, 0.03);
+	} else {
+		ResetProgressBar();
+	}
 }
 
 void ATrickShotCharacter::OnFire()
@@ -164,7 +201,18 @@ void ATrickShotCharacter::OnFire()
 				ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 				// spawn the projectile at the muzzle
-				World->SpawnActor<ATrickShotProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+				ATrickShotProjectile* p = World->SpawnActor<ATrickShotProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+
+				// set the projectile speed based on the velocity scalar
+				p->SetProjectileMovementSpeed(VelocityScalar * 3000.0f);
+
+				// reset velocity scalar to zero
+				VelocityScalar = 0;
+
+				// reset velocity charging
+				bVelocityCharging = true;
+
+				UE_LOG(LogTemp, Warning, TEXT("Final velocity scalar: %f"), VelocityScalar)
 
 				// Reset all bounce panels after shot is fired
 				TArray<AActor*> Actors;

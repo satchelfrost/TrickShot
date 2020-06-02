@@ -51,7 +51,9 @@ public:
 protected:
 	virtual void BeginPlay();
 
+
 public:
+
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseTurnRate;
@@ -79,6 +81,18 @@ public:
 	/** Whether to use motion controller location for aiming. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	uint32 bUsingMotionControllers : 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trick Shot")
+	float VelocityScalar;
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Progress Bar")
+	void UpdateProgressBar();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Progress Bar")
+	void ResetProgressBar();
+
+	UFUNCTION(BlueprintCallable)
+	void LeftMouseButtonPressed();
 
 protected:
 	
@@ -138,6 +152,11 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+
+private:
+	FTimerHandle TimerHandle_VelocityCharge;
+
+	bool bVelocityCharging;
 
 };
 
