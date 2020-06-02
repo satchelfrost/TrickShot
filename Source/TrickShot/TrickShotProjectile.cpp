@@ -41,6 +41,12 @@ ATrickShotProjectile::ATrickShotProjectile()
 	NoiseCancelTimeThreshold = 100.0f;
 }
 
+void ATrickShotProjectile::SetProjectileMovementSpeed(float speed)
+{
+	ProjectileMovement->InitialSpeed = speed;
+	ProjectileMovement->MaxSpeed = speed;
+}
+
 void ATrickShotProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	// Only add impulse and destroy projectile if we hit a physics

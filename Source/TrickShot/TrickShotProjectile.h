@@ -23,9 +23,13 @@ class ATrickShotProjectile : public AActor
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	class UProjectileMovementComponent* ProjectileMovement;
 
+
 public:
 	ATrickShotProjectile();
 
+	// Set the initial and max speed of the projectile
+	void SetProjectileMovementSpeed(float speed);
+	
 	/** called when projectile hits something */
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
