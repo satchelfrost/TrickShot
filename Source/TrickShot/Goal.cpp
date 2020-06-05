@@ -3,10 +3,12 @@
 
 #include "Goal.h"
 #include "Components/BoxComponent.h"
+#include "Components/SphereComponent.h"
 #include "TrickShotProjectile.h"
 #include "BouncePanel.h"
 #include "Kismet/GameplayStatics.h"
 #include "TrickShotGameMode.h"
+
 
 // Sets default values
 AGoal::AGoal()
@@ -29,6 +31,7 @@ void AGoal::HandleOverlap(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 	ATrickShotProjectile* ball = Cast<ATrickShotProjectile>(OtherActor);
 	if (ball) {
 		UE_LOG(LogTemp, Warning, TEXT("Ball has landed"))
+		//ball->Destroy();
 	}
 
 	// Get all of the bounce panels
@@ -43,7 +46,7 @@ void AGoal::HandleOverlap(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 	}
 
 	if (PanelReady == Actors.Num()) {
-		UGameplayStatics::PlaySound2D(this, GoalComplete);
+		//UGameplayStatics::PlaySound2D(this, GoalComplete);
 		ATrickShotGameMode* GM = Cast<ATrickShotGameMode>(GetWorld()->GetAuthGameMode());
 		if (GM)
 			GM->CompleteLevel();

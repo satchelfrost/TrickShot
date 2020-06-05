@@ -7,6 +7,7 @@
 #include "Goal.generated.h"
 
 class UBoxComponent;
+class USphereComponent;
 
 UCLASS()
 class TRICKSHOT_API AGoal : public AActor
