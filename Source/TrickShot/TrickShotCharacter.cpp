@@ -172,7 +172,9 @@ void ATrickShotCharacter::LeftMouseButtonPressed()
 		GetWorld()->GetTimerManager().ClearTimer(TimerHandle_VelocityCharge);
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle_VelocityCharge, this, &ATrickShotCharacter::LeftMouseButtonPressed, 0.03);
 	} else {
-		ResetProgressBar();
+		VelocityScalar = 0;
+		bVelocityCharging = true;
+		UpdateProgressBar();
 	}
 }
 
@@ -205,12 +207,6 @@ void ATrickShotCharacter::OnFire()
 
 				// set the projectile speed based on the velocity scalar
 				p->SetProjectileMovementSpeed(VelocityScalar * 3000.0f);
-
-				// reset velocity scalar to zero
-				VelocityScalar = 0;
-
-				// reset velocity charging
-				bVelocityCharging = true;
 
 				UE_LOG(LogTemp, Warning, TEXT("Final velocity scalar: %f"), VelocityScalar)
 
