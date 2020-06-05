@@ -88,9 +88,6 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Progress Bar")
 	void UpdateProgressBar();
 
-	UFUNCTION(BlueprintImplementableEvent, Category = "Progress Bar")
-	void ResetProgressBar();
-
 	UFUNCTION(BlueprintCallable)
 	void LeftMouseButtonPressed();
 
