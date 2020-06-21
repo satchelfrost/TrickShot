@@ -43,8 +43,10 @@ ATrickShotProjectile::ATrickShotProjectile()
 
 void ATrickShotProjectile::SetProjectileMovementSpeed(float speed)
 {
-	ProjectileMovement->InitialSpeed = speed;
-	ProjectileMovement->MaxSpeed = speed;
+	if (ProjectileMovement) {
+		ProjectileMovement->InitialSpeed = speed;
+		ProjectileMovement->MaxSpeed = speed;
+	}
 }
 
 void ATrickShotProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
