@@ -19,10 +19,17 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "GameMode")
 	void OnGoalCompleted();
 
+	UFUNCTION(BlueprintCallable, Category = "GameMode")
+	void LoadNextLevel();
+
+
 protected:
 	// Camera will be a secondary spectator to change viewport
 	UPROPERTY(EditDefaultsOnly, Category = "Spectating")
 	TSubclassOf<AActor> SpectatingViewpointClass;
+private:
+	FTimerHandle TimerHandle_EndViewTarget;
+
 };
 
 

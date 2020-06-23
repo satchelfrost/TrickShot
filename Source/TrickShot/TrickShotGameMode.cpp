@@ -15,7 +15,6 @@ ATrickShotGameMode::ATrickShotGameMode()
 
 	// use our custom HUD class
 	HUDClass = ATrickShotHUD::StaticClass();
-
 }
 
 void ATrickShotGameMode::CompleteLevel()
@@ -32,8 +31,9 @@ void ATrickShotGameMode::CompleteLevel()
 				if (MyPawn)
 					MyPawn->DisableInput(PC);
 				// Change viewport to secondary camera (i.e. not first person)
-				PC->SetViewTargetWithBlend(NewViewTarget, 2.0f, EViewTargetBlendFunction::VTBlend_Cubic);
-				OnGoalCompleted();
+				float ViewTargetTime = 2.0f;
+				PC->SetViewTargetWithBlend(NewViewTarget, ViewTargetTime, EViewTargetBlendFunction::VTBlend_Cubic);
+				GetWorld()->GetTimerManager().SetTimer(TimerHandle_EndViewTarget, this, &ATrickShotGameMode::OnGoalCompleted, ViewTargetTime);
 			} else {
 				UE_LOG(LogTemp, Warning, TEXT("PC is nullptr"))
 			}
@@ -41,4 +41,20 @@ void ATrickShotGameMode::CompleteLevel()
 	} else {
 		UE_LOG(LogTemp, Warning, TEXT("SpectatingViewpointClass is nullptr."))
 	}
+}
+
+void ATrickShotGameMode::LoadNextLevel()
+{
+	// Get level by number
+	FString LevelCountString = UGameplayStatics::GetCurrentLevelName(GetWorld());
+	UE_LOG(LogTemp, Warning, TEXT("Level %s"), *LevelCountString)
+	int32 LevelCount = FCString::Atoi(*LevelCountString);
+	LevelCount++; // increment to next level
+	LevelCountString = FString::FromInt(LevelCount);
+
+	// Check if next level exists
+	
+	// Load the next level
+	FName LevelName = *LevelCountString;
+	UGameplayStatics::OpenLevel(GetWorld(), LevelName);
 }

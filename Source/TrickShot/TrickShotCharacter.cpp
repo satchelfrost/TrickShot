@@ -206,7 +206,8 @@ void ATrickShotCharacter::OnFire()
 				ATrickShotProjectile* p = World->SpawnActor<ATrickShotProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
 
 				// set the projectile speed based on the velocity scalar
-				p->SetProjectileMovementSpeed(VelocityScalar * 3000.0f);
+				if (p)
+					p->SetProjectileMovementSpeed(VelocityScalar * 3000.0f);
 
 				UE_LOG(LogTemp, Warning, TEXT("Final velocity scalar: %f"), VelocityScalar)
 
