@@ -45,6 +45,9 @@ class ATrickShotCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UMotionControllerComponent* L_MotionController;
 
+	// Number of balls the player gets before getting a game over
+	int BallCount;
+
 public:
 	ATrickShotCharacter();
 
@@ -87,6 +90,15 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Progress Bar")
 	void UpdateProgressBar();
+
+	UFUNCTION(BlueprintCallable, Category = "Ball")
+	void DecrementBall();
+
+	UFUNCTION(BlueprintCallable, Category = "Ball")
+	int GetBallCount() { return BallCount; }
+
+	UFUNCTION(BlueprintCallable, Category = "Ball")
+	void SetBallCount(int bc);
 
 	UFUNCTION(BlueprintCallable)
 	void LeftMouseButtonPressed();

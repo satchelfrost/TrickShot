@@ -12,6 +12,7 @@ ATrickShotHUD::ATrickShotHUD()
 	// Set the crosshair texture
 	static ConstructorHelpers::FObjectFinder<UTexture2D> CrosshairTexObj(TEXT("/Game/FirstPerson/Textures/FirstPersonCrosshair"));
 	CrosshairTex = CrosshairTexObj.Object;
+	bDrawCrossHair = true;
 }
 
 
@@ -31,5 +32,8 @@ void ATrickShotHUD::DrawHUD()
 	// draw the crosshair
 	FCanvasTileItem TileItem( CrosshairDrawPosition, CrosshairTex->Resource, FLinearColor::White);
 	TileItem.BlendMode = SE_BLEND_Translucent;
-	Canvas->DrawItem( TileItem );
+
+	// but only if we should
+	if (bDrawCrossHair)
+		Canvas->DrawItem( TileItem );
 }
