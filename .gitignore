@@ -87,7 +87,7 @@ TrickShotProjectNotes.txt
 Content/Developers/*
 
 # Application build
-WindowsNoEditor/*
+#WindowsNoEditor/*
 
 # Extra assets I was just testing out
 Content/TwinmotionMaterials
