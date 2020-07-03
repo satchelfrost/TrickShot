@@ -12,6 +12,7 @@
 #include "MotionControllerComponent.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
 #include "BouncePanel.h"
+#include "TrickShotGameMode.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
@@ -89,6 +90,9 @@ ATrickShotCharacter::ATrickShotCharacter()
 
 	// Set gun velocity to charging initially
 	bVelocityCharging = true;
+
+	// Number of balls the player gets before getting a game over
+	BallCount = 5;
 }
 
 void ATrickShotCharacter::BeginPlay()
@@ -143,6 +147,23 @@ void ATrickShotCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 	PlayerInputComponent->BindAxis("TurnRate", this, &ATrickShotCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &ATrickShotCharacter::LookUpAtRate);
+}
+
+void ATrickShotCharacter::DecrementBall()
+{
+	--BallCount;
+	if (BallCount < 0) {
+		ATrickShotGameMode* GM = Cast<ATrickShotGameMode>(GetWorld()->GetAuthGameMode());
+		if (GM)
+			GM->OnGameOver();
+		else
+			UE_LOG(LogTemp, Warning, TEXT("GM is nullptr"))
+	}
+}
+
+void ATrickShotCharacter::SetBallCount(int bc)
+{
+	BallCount = bc;
 }
 
 void ATrickShotCharacter::LeftMouseButtonPressed()
@@ -204,6 +225,9 @@ void ATrickShotCharacter::OnFire()
 
 				// spawn the projectile at the muzzle
 				ATrickShotProjectile* p = World->SpawnActor<ATrickShotProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+
+				// Decrement the number of balls the player has left
+				DecrementBall();
 
 				// set the projectile speed based on the velocity scalar
 				if (p)

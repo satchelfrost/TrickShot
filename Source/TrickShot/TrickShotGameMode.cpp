@@ -5,6 +5,7 @@
 #include "TrickShotCharacter.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/AudioComponent.h"
 
 ATrickShotGameMode::ATrickShotGameMode()
 	: Super()
@@ -15,6 +16,7 @@ ATrickShotGameMode::ATrickShotGameMode()
 
 	// use our custom HUD class
 	HUDClass = ATrickShotHUD::StaticClass();
+
 }
 
 void ATrickShotGameMode::CompleteLevel()
@@ -47,14 +49,59 @@ void ATrickShotGameMode::LoadNextLevel()
 {
 	// Get level by number
 	FString LevelCountString = UGameplayStatics::GetCurrentLevelName(GetWorld());
-	UE_LOG(LogTemp, Warning, TEXT("Level %s"), *LevelCountString)
+	//UE_LOG(LogTemp, Warning, TEXT("Level %s"), *LevelCountString)
 	int32 LevelCount = FCString::Atoi(*LevelCountString);
 	LevelCount++; // increment to next level
 	LevelCountString = FString::FromInt(LevelCount);
 
-	// Check if next level exists
+	// Check if last level
+	if (LevelCount == 7) {
+		FName LevelName = "EndLevel";
+		UGameplayStatics::OpenLevel(GetWorld(), LevelName);
+	} else {
+		// Load the next level
+		FName LevelName = *LevelCountString;
+		UGameplayStatics::OpenLevel(GetWorld(), LevelName);
+	} 
 	
-	// Load the next level
-	FName LevelName = *LevelCountString;
-	UGameplayStatics::OpenLevel(GetWorld(), LevelName);
+}
+
+UAudioComponent* ATrickShotGameMode::LoadLevelJingle(UAudioComponent* ac)
+{
+	// Get level by number
+	FString LevelCountString = UGameplayStatics::GetCurrentLevelName(GetWorld());
+	int32 LevelCount = FCString::Atoi(*LevelCountString);
+
+	switch (LevelCount) {
+	case 1: ac->Sound = LevelOnejingle; break;
+	case 2: ac->Sound = LevelTwojingle; break;
+	case 3: ac->Sound = LevelThreejingle; break;
+	case 4: ac->Sound = LevelFourjingle; break;
+	case 5: ac->Sound = LevelFivejingle; break;
+	case 6: ac->Sound = LevelSixjingle; break;
+	case 7: ac->Sound = LevelSevenjingle; break;
+	}
+
+	return ac;
+}
+
+FString ATrickShotGameMode::GetEndOfLevelMessage()
+{
+	// Get current level by number
+	FString LevelCountString = UGameplayStatics::GetCurrentLevelName(GetWorld());
+	int32 LevelCount = FCString::Atoi(*LevelCountString);
+
+	FString Msg = "";
+
+	switch (LevelCount) {
+	case 1: Msg = "Nice job... I guess.";                 break;
+	case 2: Msg = "Please, you're still a noob.";         break;
+	case 3: Msg = "Ready for something harder?";          break;
+	case 4: Msg = "Fine, let's up the ante.";             break;
+	case 5: Msg = "Alright, I'm tired of your malarkey."; break;
+	case 6: Msg = "Really b?";                            break;
+	case 7: Msg = "Okay I have to hand it to you.";       break;
+	}
+
+	return Msg;
 }
