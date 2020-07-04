@@ -2,6 +2,7 @@
 A game where you attempt crazy trick shots with a monsterous ping pong ball!
 
 ![](GamePics/GamePic.png)
+![](GamePlay.gif)
 
 ### Building from source
 The following must be installed on your machine before downloading and / or contributing to the project:
