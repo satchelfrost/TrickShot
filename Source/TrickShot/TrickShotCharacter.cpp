@@ -92,7 +92,7 @@ ATrickShotCharacter::ATrickShotCharacter()
 	bVelocityCharging = true;
 
 	// Number of balls the player gets before getting a game over
-	BallCount = 5;
+	BallCount = 30;
 }
 
 void ATrickShotCharacter::BeginPlay()
