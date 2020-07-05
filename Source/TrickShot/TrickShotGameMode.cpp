@@ -55,7 +55,7 @@ void ATrickShotGameMode::LoadNextLevel()
 	LevelCountString = FString::FromInt(LevelCount);
 
 	// Check if last level
-	if (LevelCount == 7) {
+	if (LevelCount == NumLevels) {
 		FName LevelName = "EndLevel";
 		UGameplayStatics::OpenLevel(GetWorld(), LevelName);
 	} else {
@@ -72,14 +72,13 @@ UAudioComponent* ATrickShotGameMode::LoadLevelJingle(UAudioComponent* ac)
 	FString LevelCountString = UGameplayStatics::GetCurrentLevelName(GetWorld());
 	int32 LevelCount = FCString::Atoi(*LevelCountString);
 
-	switch (LevelCount) {
-	case 1: ac->Sound = LevelOnejingle; break;
-	case 2: ac->Sound = LevelTwojingle; break;
-	case 3: ac->Sound = LevelThreejingle; break;
-	case 4: ac->Sound = LevelFourjingle; break;
-	case 5: ac->Sound = LevelFivejingle; break;
-	case 6: ac->Sound = LevelSixjingle; break;
-	case 7: ac->Sound = LevelSevenjingle; break;
+	switch (LevelCount % 6) {
+	case 0: ac->Sound = jingle_0; break;
+	case 1: ac->Sound = jingle_1; break;
+	case 2: ac->Sound = jingle_2; break;
+	case 3: ac->Sound = jingle_3; break;
+	case 4: ac->Sound = jingle_4; break;
+	case 5: ac->Sound = jingle_5; break;
 	}
 
 	return ac;
@@ -94,13 +93,14 @@ FString ATrickShotGameMode::GetEndOfLevelMessage()
 	FString Msg = "";
 
 	switch (LevelCount) {
-	case 1: Msg = "Nice job... I guess.";                 break;
-	case 2: Msg = "Please, you're still a noob.";         break;
-	case 3: Msg = "Ready for something harder?";          break;
-	case 4: Msg = "Fine, let's up the ante.";             break;
-	case 5: Msg = "Alright, I'm tired of your malarkey."; break;
-	case 6: Msg = "Really b?";                            break;
-	case 7: Msg = "Okay I have to hand it to you.";       break;
+	case 0: Msg = "Nice job... I guess.";                 break;
+	case 1: Msg = "Please, you're still a noob.";         break;
+	case 2: Msg = "Ready for something harder?";          break;
+	case 3: Msg = "Fine, let's up the ante.";             break;
+	case 4: Msg = "Alright, I'm tired of your malarkey."; break;
+	case 5: Msg = "Really b?";                            break;
+	case 6: Msg = "Okay I have to hand it to you.";       break;
+	default: Msg = "Default Message";                     break;
 	}
 
 	return Msg;

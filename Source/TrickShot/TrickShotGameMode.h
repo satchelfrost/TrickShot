@@ -37,20 +37,21 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Spectating")
 	TSubclassOf<AActor> SpectatingViewpointClass;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Levels")
+	int32 NumLevels;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
-	USoundBase* LevelOnejingle;
+	USoundBase* jingle_0;
 	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
-	USoundBase* LevelTwojingle;
+	USoundBase* jingle_1;
 	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
-	USoundBase* LevelThreejingle;
+	USoundBase* jingle_2;
 	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
-	USoundBase* LevelFourjingle;
+	USoundBase* jingle_3;
 	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
-	USoundBase* LevelFivejingle;
+	USoundBase* jingle_4;
 	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
-	USoundBase* LevelSixjingle;
-	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
-	USoundBase* LevelSevenjingle;
+	USoundBase* jingle_5;
 	
 	//UPROPERTY(VisibleAnywhere, Category = "Anything")
 	//UAudioComponent* CompletionJingle;

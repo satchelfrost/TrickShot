@@ -19,11 +19,10 @@ void AMovingBouncePanel::Tick(float DeltaSeconds)
 	FVector NewLocation = GetActorLocation();
 
 	// We are either moving forward or backward
-	if (bMoveFoward) {
+	if (bMoveFoward)
 		MoveForward(NewLocation);
-	} else {
+	else
 		MoveBackward(NewLocation);
-	}
 
 	// Euclidean distance between actor's initial position and newly moved
 	float dist = FVector::Distance(InitialPosition, NewLocation);
@@ -31,7 +30,7 @@ void AMovingBouncePanel::Tick(float DeltaSeconds)
 	// If distance is greater than the reset distance move opposite direction
 	bMoveFoward = (dist >= ResetDistance) ? !bMoveFoward : bMoveFoward;
 
-	UE_LOG(LogTemp, Warning, TEXT("Euclidian distance: %.1f, Reset distance: %.1f"), dist, ResetDistance)
+	//UE_LOG(LogTemp, Warning, TEXT("Euclidean distance: %.1f, Reset distance: %.1f"), dist, ResetDistance)
 
 	SetActorLocation(NewLocation);
 }
