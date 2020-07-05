@@ -24,7 +24,6 @@ ABouncePanel::ABouncePanel()
 
 }
 
-
 void ABouncePanel::HandleOverlap(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	ATrickShotProjectile* ball = Cast<ATrickShotProjectile>(OtherActor);

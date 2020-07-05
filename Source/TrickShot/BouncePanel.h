@@ -21,6 +21,7 @@ public:
 	bool bPanelSetReset;
 
 protected:
+
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UBoxComponent* OverlapComp;
 
