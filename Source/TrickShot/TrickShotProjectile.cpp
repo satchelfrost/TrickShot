@@ -80,6 +80,8 @@ void ATrickShotProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 		auto ElapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(diff).count();
 		if (ElapsedTime > NoiseCancelTimeThreshold) // Prevents tons of bouncy noises
 			UGameplayStatics::PlaySound2D(this, PingPongSound);
+		else
+			Destroy(); // Destroy the ball if it is just doing nothing
 		OnHitPreviousCall = OnHitCurrentCall;
 	}
 }
