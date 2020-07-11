@@ -86,6 +86,9 @@ TrickShotProjectNotes.txt
 # No idea what this folder is for so I will ignore it
 Content/Developers/*
 
+# ignore music
+Content/Generation198X_music_pack
+
 # Application build
 WindowsNoEditor/*
 
