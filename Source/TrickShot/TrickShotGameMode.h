@@ -59,7 +59,6 @@ protected:
 
 private:
 	FTimerHandle TimerHandle_EndViewTarget;
-
 };
 
 

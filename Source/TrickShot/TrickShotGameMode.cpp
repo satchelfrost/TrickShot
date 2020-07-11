@@ -16,7 +16,6 @@ ATrickShotGameMode::ATrickShotGameMode()
 
 	// use our custom HUD class
 	HUDClass = ATrickShotHUD::StaticClass();
-
 }
 
 void ATrickShotGameMode::CompleteLevel()
@@ -63,7 +62,6 @@ void ATrickShotGameMode::LoadNextLevel()
 		FName LevelName = *LevelCountString;
 		UGameplayStatics::OpenLevel(GetWorld(), LevelName);
 	} 
-	
 }
 
 UAudioComponent* ATrickShotGameMode::LoadLevelJingle(UAudioComponent* ac)
@@ -98,8 +96,11 @@ FString ATrickShotGameMode::GetEndOfLevelMessage()
 	case 2: Msg = "Ready for something harder?";          break;
 	case 3: Msg = "Fine, let's up the ante.";             break;
 	case 4: Msg = "Alright, I'm tired of your malarkey."; break;
-	case 5: Msg = "Really b?";                            break;
-	case 6: Msg = "Okay I have to hand it to you.";       break;
+	case 5: Msg = "Checkpoint Reached.";                  break;
+	case 6: Msg = "That was just a practice run.";        break;
+	case 7: Msg = "Try this on for size!";                break;
+	case 8: Msg = "Still... you know nothing.";           break;
+	case 9: Msg = "Prepare to be powned.";                break;
 	default: Msg = "Default Message";                     break;
 	}
 
