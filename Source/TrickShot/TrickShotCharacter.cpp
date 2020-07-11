@@ -137,8 +137,8 @@ void ATrickShotCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &ATrickShotCharacter::OnResetVR);
 
 	// Bind movement events
-	PlayerInputComponent->BindAxis("MoveForward", this, &ATrickShotCharacter::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &ATrickShotCharacter::MoveRight);
+	//PlayerInputComponent->BindAxis("MoveForward", this, &ATrickShotCharacter::MoveForward);
+	//PlayerInputComponent->BindAxis("MoveRight", this, &ATrickShotCharacter::MoveRight);
 
 	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
 	// "turn" handles devices that provide an absolute delta, such as a mouse.
@@ -233,7 +233,7 @@ void ATrickShotCharacter::OnFire()
 				if (p)
 					p->SetProjectileMovementSpeed(VelocityScalar * 3000.0f);
 
-				UE_LOG(LogTemp, Warning, TEXT("Final velocity scalar: %f"), VelocityScalar)
+				//UE_LOG(LogTemp, Warning, TEXT("Final velocity scalar: %f"), VelocityScalar)
 
 				// Reset all bounce panels after shot is fired
 				TArray<AActor*> Actors;
@@ -337,7 +337,7 @@ void ATrickShotCharacter::MoveForward(float Value)
 	if (Value != 0.0f)
 	{
 		// add movement in that direction
-		AddMovementInput(GetActorForwardVector(), Value);
+		//AddMovementInput(GetActorForwardVector(), Value);
 	}
 }
 
@@ -346,7 +346,7 @@ void ATrickShotCharacter::MoveRight(float Value)
 	if (Value != 0.0f)
 	{
 		// add movement in that direction
-		AddMovementInput(GetActorRightVector(), Value);
+		//AddMovementInput(GetActorRightVector(), Value);
 	}
 }
 
