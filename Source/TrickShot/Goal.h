@@ -33,4 +33,11 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
 	USoundBase* GoalIncomplete;
+
+	// Testing out rotation
+	UPROPERTY(EditDefaultsOnly, Category = "Movement")
+	float YawValue;
+
+public:
+	virtual void Tick(float DeltaSeconds) override;
 };

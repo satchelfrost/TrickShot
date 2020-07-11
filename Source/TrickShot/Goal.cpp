@@ -13,6 +13,8 @@
 // Sets default values
 AGoal::AGoal()
 {
+	PrimaryActorTick.bCanEverTick = true;
+
 	// Initialize the overlap component
 	OverlapComp = CreateDefaultSubobject<UBoxComponent>(TEXT("OverlapComp"));
 	OverlapComp->SetBoxExtent(FVector(200.0f, 200.0f, 50.0f));
@@ -28,11 +30,11 @@ AGoal::AGoal()
 
 void AGoal::HandleOverlap(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	ATrickShotProjectile* ball = Cast<ATrickShotProjectile>(OtherActor);
-	if (ball) {
-		UE_LOG(LogTemp, Warning, TEXT("Ball has landed"))
-		//ball->Destroy();
-	}
+	//ATrickShotProjectile* ball = Cast<ATrickShotProjectile>(OtherActor);
+	//if (ball) {
+	//	UE_LOG(LogTemp, Warning, TEXT("Ball has landed"))
+	//	//ball->Destroy();
+	//}
 
 	// Get all of the bounce panels
 	TArray<AActor*> Actors;
@@ -55,4 +57,13 @@ void AGoal::HandleOverlap(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 	} else {
 		UGameplayStatics::PlaySound2D(this, GoalIncomplete);
 	}
+}
+
+void AGoal::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	FQuat QuatRotation = FQuat(FRotator(0.f, YawValue * DeltaSeconds, 0.f));
+
+	AddActorLocalRotation(QuatRotation);
 }
