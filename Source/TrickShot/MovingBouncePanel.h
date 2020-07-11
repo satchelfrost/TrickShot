@@ -32,20 +32,20 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Movement")
 	bool bMoveZDirection;
 
-	// X, Y, and Z directions movement amount
+	// Time spent traveling in a direction
 	UPROPERTY(EditDefaultsOnly, Category = "Movement")
-	float MoveXAmount;
+	float DistanceTravelTimeX;
 	UPROPERTY(EditDefaultsOnly, Category = "Movement")
-	float MoveYAmount;
+	float DistanceTravelTimeY;
 	UPROPERTY(EditDefaultsOnly, Category = "Movement")
-	float MoveZAmount;
-	
+	float DistanceTravelTimeZ;
+
 	virtual void BeginPlay() override;
 private:
 	FVector InitialPosition;
 
 	bool bMoveFoward; // Note: "Forward" relatively speaking
 
-	void MoveForward(FVector& v);  // Note: "Forward" relatively speaking
-	void MoveBackward(FVector& v); // Note: "Backward" relatively speaking
+	void MoveForward(FVector& v, float DeltaSeconds);  // Note: "Forward" relatively speaking
+	void MoveBackward(FVector& v, float DeltaSeconds); // Note: "Backward" relatively speaking
 };
