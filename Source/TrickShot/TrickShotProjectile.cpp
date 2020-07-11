@@ -69,8 +69,8 @@ void ATrickShotProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 		AGoal* Goal = Cast<AGoal>(OtherActor);
 		if (Goal) {
 			Destroy();
-			UE_LOG(LogTemp, Warning, TEXT("Ball destroyed because of goal overlap"))
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Explosion, GetActorLocation());
+			//UE_LOG(LogTemp, Warning, TEXT("Ball destroyed because of goal overlap"))
+			//UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Explosion, GetActorLocation());
 			return;
 		}
 
@@ -78,10 +78,16 @@ void ATrickShotProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 		auto OnHitCurrentCall = std::chrono::steady_clock::now();
 		auto diff = OnHitCurrentCall - OnHitPreviousCall;
 		auto ElapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(diff).count();
-		if (ElapsedTime > NoiseCancelTimeThreshold) // Prevents tons of bouncy noises
+
+		// Prevents tons of bouncy noises
+		if (ElapsedTime > NoiseCancelTimeThreshold) {
 			UGameplayStatics::PlaySound2D(this, PingPongSound);
-		else
+		} else {
 			Destroy(); // Destroy the ball if it is just doing nothing
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Explosion, GetActorLocation());
+			UGameplayStatics::PlaySound2D(this, ExplosionSound);
+		}
+
 		OnHitPreviousCall = OnHitCurrentCall;
 	}
 }

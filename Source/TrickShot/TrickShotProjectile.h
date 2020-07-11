@@ -45,6 +45,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
 	USoundBase* PingPongSound;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
+	USoundBase* ExplosionSound;
+
 	UPROPERTY(EditDefaultsOnly, Category = "FX")
 	UParticleSystem* Explosion;
 
