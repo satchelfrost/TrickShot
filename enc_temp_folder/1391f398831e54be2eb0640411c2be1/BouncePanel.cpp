@@ -43,7 +43,7 @@ void ABouncePanel::HandleOverlap(UPrimitiveComponent* HitComponent, AActor* Othe
 			bool PanelsAreSet = Goal->AreAllPanelsSet();
 			if (PanelsAreSet)
 				Goal->bGoalReady = true;
-			else
+			else 
 				Goal->bGoalReady = false;
 		} else {
 			UE_LOG(LogTemp, Warning, TEXT("Goal is null"))
