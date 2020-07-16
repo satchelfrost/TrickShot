@@ -11,6 +11,7 @@ class ATrickShotGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
+
 public:
 	ATrickShotGameMode();
 
@@ -24,6 +25,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "GameMode")
 	void LoadNextLevel();
+
+	UFUNCTION(BlueprintCallable, Category = "GameMode")
+	bool CheckPointReached();
 
 	UFUNCTION(BlueprintCallable, Category = "GameMode")
 	UAudioComponent* LoadLevelJingle(UAudioComponent* ac);
@@ -59,6 +63,9 @@ protected:
 
 private:
 	FTimerHandle TimerHandle_EndViewTarget;
+
+
+	const int32 NUM_LEVELS_TO_GET_CCKPNT = 5;
 };
 
 

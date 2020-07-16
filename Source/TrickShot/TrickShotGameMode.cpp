@@ -64,6 +64,18 @@ void ATrickShotGameMode::LoadNextLevel()
 	} 
 }
 
+bool ATrickShotGameMode::CheckPointReached()
+{
+	FString LevelCountString = UGameplayStatics::GetCurrentLevelName(GetWorld());
+	int32 LevelCount = FCString::Atoi(*LevelCountString);
+	bool chkpnt = LevelCount % NUM_LEVELS_TO_GET_CCKPNT == 0;
+	UE_LOG(LogTemp, Warning, TEXT("Level Count %d, Checkpoint %d"), LevelCount, chkpnt)
+	if (LevelCount != 0)
+		return chkpnt;
+	else
+		return 0;
+}
+
 UAudioComponent* ATrickShotGameMode::LoadLevelJingle(UAudioComponent* ac)
 {
 	// Get level by number
