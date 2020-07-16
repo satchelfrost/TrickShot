@@ -46,6 +46,7 @@ class ATrickShotCharacter : public ACharacter
 	class UMotionControllerComponent* L_MotionController;
 
 	// Number of balls the player gets before getting a game over
+	UPROPERTY(EditDefaultsOnly, Category = "Balls")
 	int BallCount;
 
 public:

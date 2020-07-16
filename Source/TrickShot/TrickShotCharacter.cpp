@@ -1,5 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
+#include "Goal.h"
 #include "TrickShotCharacter.h"
 #include "TrickShotProjectile.h"
 #include "Animation/AnimInstance.h"
@@ -242,6 +243,11 @@ void ATrickShotCharacter::OnFire()
 					ABouncePanel* Panel = Cast<ABouncePanel>(Actor);
 					Panel->bPanelSetReset = false;
 				}
+
+				// Reset Goal
+				UGameplayStatics::GetAllActorsOfClass(GetWorld(), AGoal::StaticClass(), Actors);
+				AGoal* Goal = Cast<AGoal>(Actors[0]);
+				Goal->bGoalReady = false;
 			}
 		}
 	}
