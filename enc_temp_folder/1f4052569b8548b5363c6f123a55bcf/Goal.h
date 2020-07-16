@@ -15,6 +15,7 @@ class TRICKSHOT_API AGoal : public AActor
 	GENERATED_BODY()
 	
 public:	
+	// Sets default values for this actor's properties
 	AGoal();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")

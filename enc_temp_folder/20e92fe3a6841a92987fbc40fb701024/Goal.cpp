@@ -1,3 +1,6 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
 #include "Goal.h"
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
@@ -6,6 +9,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "TrickShotGameMode.h"
 
+
+// Sets default values
 AGoal::AGoal()
 {
 	//PrimaryActorTick.bCanEverTick = true;
@@ -14,10 +19,10 @@ AGoal::AGoal()
 	OverlapComp = CreateDefaultSubobject<UBoxComponent>(TEXT("OverlapComp"));
 	OverlapComp->SetBoxExtent(FVector(200.0f, 200.0f, 50.0f));
 	OverlapComp->SetHiddenInGame(true);
+	//OverlapComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	RootComponent = OverlapComp;
 	OverlapComp->OnComponentHit.AddDynamic(this, &AGoal::HandleOverlap);
 
-	// Setup mesh component
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
 	MeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	MeshComp->SetupAttachment(OverlapComp);
@@ -25,15 +30,31 @@ AGoal::AGoal()
 
 void AGoal::HandleOverlap(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	// Check if all panels are set
+	//ATrickShotProjectile* ball = Cast<ATrickShotProjectile>(OtherActor);
+	//if (ball) {
+	//	UE_LOG(LogTemp, Warning, TEXT("Ball has landed"))
+	//	//ball->Destroy();
+	//}
+
+	// Get all of the bounce panels
+	//TArray<AActor*> Actors;
+	//UGameplayStatics::GetAllActorsOfClass(GetWorld(), ABouncePanel::StaticClass(), Actors);
+	//int PanelReady = 0;
+
+	//for (auto Actor : Actors) {
+	//	ABouncePanel* Panel = Cast<ABouncePanel>(Actor);
+	//	if (Panel && Panel->bPanelSetReset)
+	//		PanelReady++;
+	//}
+
 	if (AreAllPanelsSet()) {
+		//UGameplayStatics::PlaySound2D(this, GoalComplete);
 		ATrickShotGameMode* GM = Cast<ATrickShotGameMode>(GetWorld()->GetAuthGameMode());
-		if (GM) // if so then player has completed the level
+		if (GM)
 			GM->CompleteLevel();
 		else
 			UE_LOG(LogTemp, Warning, TEXT("GM is nullptr"))
 	} else {
-		// if panels are not set make an error noise
 		UGameplayStatics::PlaySound2D(this, GoalIncomplete);
 	}
 }
