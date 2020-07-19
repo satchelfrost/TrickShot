@@ -16,12 +16,10 @@ public:
 	ATrickShotGameMode();
 
 	void CompleteLevel();
+	void OnGameOver();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "GameMode")
 	void OnGoalCompleted();
-
-	UFUNCTION(BlueprintImplementableEvent, Category = "GameMode")
-	void OnGameOver();
 
 	UFUNCTION(BlueprintCallable, Category = "GameMode")
 	void LoadNextLevel();
@@ -30,13 +28,17 @@ public:
 	bool CheckPointReached();
 
 	UFUNCTION(BlueprintCallable, Category = "GameMode")
-	UAudioComponent* LoadLevelJingle(UAudioComponent* ac);
+	void PauseToReadMsg(float PauseTime);
+
+	UFUNCTION(BlueprintCallable, Category = "GameMode")
+	void LevelTransition();
 
 	UFUNCTION(BlueprintCallable, Category = "GameMode")
 	FString GetEndOfLevelMessage();
 
-
 protected:
+	virtual void BeginPlay() override;
+
 	// Camera will be a secondary spectator to change viewport
 	UPROPERTY(EditDefaultsOnly, Category = "Spectating")
 	TSubclassOf<AActor> SpectatingViewpointClass;
@@ -45,27 +47,27 @@ protected:
 	int32 NumLevels;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
-	USoundBase* jingle_0;
-	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
-	USoundBase* jingle_1;
-	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
-	USoundBase* jingle_2;
-	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
-	USoundBase* jingle_3;
-	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
-	USoundBase* jingle_4;
-	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
-	USoundBase* jingle_5;
-	
-	//UPROPERTY(VisibleAnywhere, Category = "Anything")
-	//UAudioComponent* CompletionJingle;
-	
+	USoundBase* CompletionJingle;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
+	USoundBase* Song1;
+	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
+	USoundBase* Song2;
+	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
+	USoundBase* Song3;
+	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
+	USoundBase* Song4;
+	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
+	USoundBase* Song5;
+	
 private:
 	FTimerHandle TimerHandle_EndViewTarget;
 
+	FTimerHandle TimerHandle_PauseBeforeLevel;
 
 	const int32 NUM_LEVELS_TO_GET_CCKPNT = 5;
+
+	void EnableInputAndLoadLevel();
 };
 
 

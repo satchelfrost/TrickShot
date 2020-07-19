@@ -6,6 +6,7 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/AudioComponent.h"
+#include "TrickShotGameInstance.h"
 
 ATrickShotGameMode::ATrickShotGameMode()
 	: Super()
@@ -44,6 +45,18 @@ void ATrickShotGameMode::CompleteLevel()
 	}
 }
 
+void ATrickShotGameMode::OnGameOver()
+{
+	// Fade out current song
+	UGameInstance* GI = GetGameInstance();
+	UTrickShotGameInstance* TrickShotGI = Cast<UTrickShotGameInstance>(GI);
+	if (TrickShotGI)
+		TrickShotGI->FadeCurrentSong();
+
+	// Open the game over level
+	UGameplayStatics::OpenLevel(GetWorld(), "GameOverLevel");
+}
+
 void ATrickShotGameMode::LoadNextLevel()
 {
 	// Get level by number
@@ -55,20 +68,28 @@ void ATrickShotGameMode::LoadNextLevel()
 
 	// Check if last level
 	if (LevelCount == NumLevels) {
-		FName LevelName = "EndLevel";
+		FName LevelName = "EndLevel"; // TODO: This doesn't need to be a variable
 		UGameplayStatics::OpenLevel(GetWorld(), LevelName);
 	} else {
 		// Load the next level
 		FName LevelName = *LevelCountString;
 		UGameplayStatics::OpenLevel(GetWorld(), LevelName);
-	} 
+	}
+
+	// If we've reached a checkpoint then increment the checkpoint 
+	if (CheckPointReached()) {
+		UGameInstance* GI = GetGameInstance();
+		UTrickShotGameInstance* TrickShotGI = Cast<UTrickShotGameInstance>(GI);
+		if (TrickShotGI)
+			TrickShotGI->IncrementCheckpoint();
+	}
 }
 
 bool ATrickShotGameMode::CheckPointReached()
 {
 	FString LevelCountString = UGameplayStatics::GetCurrentLevelName(GetWorld());
 	int32 LevelCount = FCString::Atoi(*LevelCountString);
-	bool chkpnt = LevelCount % NUM_LEVELS_TO_GET_CCKPNT == 0;
+	bool chkpnt = LevelCount % NUM_LEVELS_TO_GET_CCKPNT == 0; // This is not clean at ALL
 	UE_LOG(LogTemp, Warning, TEXT("Level Count %d, Checkpoint %d"), LevelCount, chkpnt)
 	if (LevelCount != 0)
 		return chkpnt;
@@ -76,22 +97,31 @@ bool ATrickShotGameMode::CheckPointReached()
 		return 0;
 }
 
-UAudioComponent* ATrickShotGameMode::LoadLevelJingle(UAudioComponent* ac)
+void ATrickShotGameMode::PauseToReadMsg(float PauseTime)
 {
-	// Get level by number
-	FString LevelCountString = UGameplayStatics::GetCurrentLevelName(GetWorld());
-	int32 LevelCount = FCString::Atoi(*LevelCountString);
+	// Pause before enabling player input and loading the next level
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle_PauseBeforeLevel, this, &ATrickShotGameMode::EnableInputAndLoadLevel, PauseTime);
+}
 
-	switch (LevelCount % 6) {
-	case 0: ac->Sound = jingle_0; break;
-	case 1: ac->Sound = jingle_1; break;
-	case 2: ac->Sound = jingle_2; break;
-	case 3: ac->Sound = jingle_3; break;
-	case 4: ac->Sound = jingle_4; break;
-	case 5: ac->Sound = jingle_5; break;
+void ATrickShotGameMode::LevelTransition()
+{
+	// If checkpoint reached, kill music, play checkpoint jingle, load next level
+	if (CheckPointReached()) {
+		// Kill music
+		UGameInstance* GI = GetGameInstance();
+		UTrickShotGameInstance* TrickShotGI = Cast<UTrickShotGameInstance>(GI);
+		if (TrickShotGI)
+			TrickShotGI->KillCurrentSong();
+
+		// Play checkpoint jingle
+		UGameplayStatics::PlaySound2D(this, CompletionJingle);
+
+		// Pause to read message before loading next level
+		PauseToReadMsg(CompletionJingle->Duration);
+	} else {
+		// Pause to read message before loading next level
+		PauseToReadMsg(3.0);
 	}
-
-	return ac;
 }
 
 FString ATrickShotGameMode::GetEndOfLevelMessage()
@@ -117,4 +147,51 @@ FString ATrickShotGameMode::GetEndOfLevelMessage()
 	}
 
 	return Msg;
+}
+
+void ATrickShotGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+
+	UGameInstance* GI = GetGameInstance();
+	UTrickShotGameInstance* TrickShotGI = Cast<UTrickShotGameInstance>(GI);
+
+	if (TrickShotGI) {
+		if (TrickShotGI->StartMusicForFirstTime) {
+			//TrickShotGI->LoadMusicFromCheckpoint();
+			TrickShotGI->StartMusicForFirstTime = false;
+			UAudioComponent* ac = nullptr;
+			UE_LOG(LogTemp, Warning, TEXT("m_Checkpoint = %d"), TrickShotGI->m_Checkpoint)
+			switch (TrickShotGI->m_Checkpoint) {
+			case 0: ac = UGameplayStatics::SpawnSound2D(this, Song1, 0.4f, 1.0f, 0.0f, nullptr, true, true);  break;
+			case 1: ac = UGameplayStatics::SpawnSound2D(this, Song2, 0.4f, 1.0f, 0.0f, nullptr, true, true);  break;
+			case 2: ac = UGameplayStatics::SpawnSound2D(this, Song3, 0.4f, 1.0f, 0.0f, nullptr, true, true);  break;
+			case 3: ac = UGameplayStatics::SpawnSound2D(this, Song4, 0.4f, 1.0f, 0.0f, nullptr, true, true);  break;
+			case 4: ac = UGameplayStatics::SpawnSound2D(this, Song5, 0.4f, 1.0f, 0.0f, nullptr, true, true);  break;
+			}
+			if (ac)
+				ac->FadeIn(3.0f, 1.0, 0.0, EAudioFaderCurve::Linear);
+
+			TrickShotGI->SaveCurrentSong(ac);
+		} else {
+			UE_LOG(LogTemp, Warning, TEXT("Music not loaded a second time"))
+		}
+	} else {
+		UE_LOG(LogTemp, Warning, TEXT("TrickShot Game instance failed!"))
+	}
+}
+
+void ATrickShotGameMode::EnableInputAndLoadLevel()
+{
+		APlayerController* PC = Cast<APlayerController>(GetWorld()->GetFirstPlayerController());
+		if (PC) {
+			// Enable input
+			APawn* MyPawn = PC->GetPawn();
+			if (MyPawn)
+				MyPawn->EnableInput(PC);
+		} else {
+			UE_LOG(LogTemp, Warning, TEXT("PC is nullptr."))
+		}
+
+		LoadNextLevel();
 }
