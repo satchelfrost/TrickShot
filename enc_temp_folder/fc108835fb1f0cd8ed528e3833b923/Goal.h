@@ -27,7 +27,7 @@ public:
     bool AreAllPanelsSet();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Color")
-	void UpdateColor();
+	void ChangeColor();
 
 protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")

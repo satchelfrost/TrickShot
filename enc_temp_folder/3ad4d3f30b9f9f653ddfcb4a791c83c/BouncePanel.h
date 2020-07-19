@@ -33,5 +33,5 @@ public:
     void HandleOverlap(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Color")
-	void UpdateColor();
+	void ChangeColor();
 };

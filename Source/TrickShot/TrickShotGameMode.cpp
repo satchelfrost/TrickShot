@@ -158,7 +158,6 @@ void ATrickShotGameMode::BeginPlay()
 
 	if (TrickShotGI) {
 		if (TrickShotGI->StartMusicForFirstTime) {
-			//TrickShotGI->LoadMusicFromCheckpoint();
 			TrickShotGI->StartMusicForFirstTime = false;
 			UAudioComponent* ac = nullptr;
 			UE_LOG(LogTemp, Warning, TEXT("m_Checkpoint = %d"), TrickShotGI->m_Checkpoint)

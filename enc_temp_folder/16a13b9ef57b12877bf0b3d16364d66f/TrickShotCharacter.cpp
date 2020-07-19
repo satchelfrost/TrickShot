@@ -242,14 +242,14 @@ void ATrickShotCharacter::OnFire()
 				for (auto Actor : Actors) {
 					ABouncePanel* Panel = Cast<ABouncePanel>(Actor);
 					Panel->bPanelSetReset = false;
-					Panel->UpdateColor();
+					Panel->ChangeColor();
 				}
 
 				// Reset Goal
 				UGameplayStatics::GetAllActorsOfClass(GetWorld(), AGoal::StaticClass(), Actors);
 				AGoal* Goal = Cast<AGoal>(Actors[0]);
 				Goal->bGoalReady = false;
-				Goal->UpdateColor();
+				Goal->ChangeColor();
 			}
 		}
 	}

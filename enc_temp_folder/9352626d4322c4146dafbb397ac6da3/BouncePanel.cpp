@@ -35,7 +35,7 @@ void ABouncePanel::HandleOverlap(UPrimitiveComponent* HitComponent, AActor* Othe
 		FString reset = "reset";
 		UE_LOG(LogTemp, Warning, TEXT("Panel has been %s"), (bPanelSetReset) ? *set : *reset)
 
-		UpdateColor();
+		ChangeColor();
 
 		// Get the goal
 		TArray<AActor*> Actors;
@@ -43,12 +43,10 @@ void ABouncePanel::HandleOverlap(UPrimitiveComponent* HitComponent, AActor* Othe
 		AGoal* Goal = Cast<AGoal>(Actors[0]);
 		if (Goal) {
 			bool PanelsAreSet = Goal->AreAllPanelsSet();
-			if (PanelsAreSet) {
+			if (PanelsAreSet)
 				Goal->bGoalReady = true;
-				Goal->UpdateColor();
-			} else {
+			else
 				Goal->bGoalReady = false;
-			}
 		} else {
 			UE_LOG(LogTemp, Warning, TEXT("Goal is null"))
 		}
