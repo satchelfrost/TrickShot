@@ -53,6 +53,9 @@ void ATrickShotGameMode::OnGameOver()
 	if (TrickShotGI)
 		TrickShotGI->FadeCurrentSong();
 
+	// Save current checkpoint
+	TrickShotGI->m_Checkpoint = GetCurrentCheckpoint();
+
 	// Open the game over level
 	UGameplayStatics::OpenLevel(GetWorld(), "GameOverLevel");
 }
@@ -67,7 +70,7 @@ void ATrickShotGameMode::LoadNextLevel()
 	LevelCountString = FString::FromInt(LevelCount);
 
 	// Check if last level
-	if (LevelCount == NumLevels) {
+	if (LevelCount > NumLevels) {
 		FName LevelName = "EndLevel"; // TODO: This doesn't need to be a variable
 		UGameplayStatics::OpenLevel(GetWorld(), LevelName);
 	} else {
@@ -75,26 +78,60 @@ void ATrickShotGameMode::LoadNextLevel()
 		FName LevelName = *LevelCountString;
 		UGameplayStatics::OpenLevel(GetWorld(), LevelName);
 	}
-
-	// If we've reached a checkpoint then increment the checkpoint 
-	if (CheckPointReached()) {
-		UGameInstance* GI = GetGameInstance();
-		UTrickShotGameInstance* TrickShotGI = Cast<UTrickShotGameInstance>(GI);
-		if (TrickShotGI)
-			TrickShotGI->IncrementCheckpoint();
-	}
 }
 
 bool ATrickShotGameMode::CheckPointReached()
 {
+	// Checks if we are on the level to get check point, not necessarily saying we have beat the level.
 	FString LevelCountString = UGameplayStatics::GetCurrentLevelName(GetWorld());
 	int32 LevelCount = FCString::Atoi(*LevelCountString);
-	bool chkpnt = LevelCount % NUM_LEVELS_TO_GET_CCKPNT == 0; // This is not clean at ALL
-	UE_LOG(LogTemp, Warning, TEXT("Level Count %d, Checkpoint %d"), LevelCount, chkpnt)
-	if (LevelCount != 0)
-		return chkpnt;
-	else
-		return 0;
+	return LevelCount % NUM_LVLS_FOR_CHKPNT == 0;
+}
+
+int32 ATrickShotGameMode::GetCurrentCheckpoint()
+{
+	// Calculate current checkpoint: so levels can be loaded out of order and have music match.
+	FString LevelCountString = UGameplayStatics::GetCurrentLevelName(GetWorld());
+	int32 LevelCount = FCString::Atoi(*LevelCountString);
+	int32 Chkpnt = (LevelCount % NUM_LVLS_FOR_CHKPNT != 0) ? LevelCount / NUM_LVLS_FOR_CHKPNT : LevelCount / (NUM_LVLS_FOR_CHKPNT + 1);
+	return Chkpnt;
+}
+
+void ATrickShotGameMode::LoadMusic()
+{
+	// Get static variable container for music and set/reset music boolean.
+	UGameInstance* GI = GetGameInstance();
+	UTrickShotGameInstance* TrickShotGI = Cast<UTrickShotGameInstance>(GI);
+
+	// Get current checkpoint
+	int32 Chkpnt = GetCurrentCheckpoint();
+
+	// Load music or continue playing music 
+	if (TrickShotGI) {
+		if (TrickShotGI->StartMusicForFirstTime) {
+			TrickShotGI->StartMusicForFirstTime = false;
+			UAudioComponent* ac = nullptr;
+			switch (Chkpnt) {
+			case 0: ac = UGameplayStatics::SpawnSound2D(this, Song1, 0.4f, 1.0f, 0.0f, nullptr, true, true);  break;
+			case 1: ac = UGameplayStatics::SpawnSound2D(this, Song2, 0.4f, 1.0f, 0.0f, nullptr, true, true);  break;
+			case 2: ac = UGameplayStatics::SpawnSound2D(this, Song3, 0.4f, 1.0f, 0.0f, nullptr, true, true);  break;
+			case 3: ac = UGameplayStatics::SpawnSound2D(this, Song4, 0.4f, 1.0f, 0.0f, nullptr, true, true);  break;
+			case 4: ac = UGameplayStatics::SpawnSound2D(this, Song5, 0.4f, 1.0f, 0.0f, nullptr, true, true);  break;
+			}
+
+			// Fade in music
+			if (ac)
+				ac->FadeIn(3.0f, 1.0, 0.0, EAudioFaderCurve::Linear);
+
+			// We need to statically save current song address so that later we can fade out
+			TrickShotGI->SaveCurrentSong(ac);
+		} else {
+			UE_LOG(LogTemp, Warning, TEXT("Music not loaded a second time"))
+		}
+	} else {
+		UE_LOG(LogTemp, Warning, TEXT("TrickShot Game instance failed!"))
+	}
+
 }
 
 void ATrickShotGameMode::PauseToReadMsg(float PauseTime)
@@ -133,17 +170,19 @@ FString ATrickShotGameMode::GetEndOfLevelMessage()
 	FString Msg = "";
 
 	switch (LevelCount) {
-	case 0: Msg = "Nice job... I guess.";                 break;
-	case 1: Msg = "Please, you're still a noob.";         break;
-	case 2: Msg = "Ready for something harder?";          break;
-	case 3: Msg = "Fine, let's up the ante.";             break;
-	case 4: Msg = "Alright, I'm tired of your malarkey."; break;
-	case 5: Msg = "Checkpoint Reached.";                  break;
-	case 6: Msg = "That was just a practice run.";        break;
-	case 7: Msg = "Try this on for size!";                break;
-	case 8: Msg = "Still... you know nothing.";           break;
-	case 9: Msg = "Prepare to be powned.";                break;
-	default: Msg = "Default Message";                     break;
+	case  1: Msg = "Nice job... I guess.";                 break;
+	case  2: Msg = "Please, you're still a noob.";         break;
+	case  3: Msg = "Ready for something harder?";          break;
+	case  4: Msg = "Fine, let's up the ante.";             break;
+	case  5: Msg = "Alright, I'm tired of your malarkey."; break;
+	case  6: Msg = "Checkpoint Reached.";                  break;
+	case  7: Msg = "That was just a practice run.";        break;
+	case  8: Msg = "Try this next one on for size!";       break;
+	case  9: Msg = "Still... you know nothing.";           break;
+	case 10: Msg = "Prepare to be powned.";                break;
+	case 11: Msg = "Well well well... Try This!";          break;
+	case 12: Msg = "Checkpoint Reached.";                  break;
+	default: Msg = "Default Message";                      break;
 	}
 
 	return Msg;
@@ -153,31 +192,8 @@ void ATrickShotGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UGameInstance* GI = GetGameInstance();
-	UTrickShotGameInstance* TrickShotGI = Cast<UTrickShotGameInstance>(GI);
-
-	if (TrickShotGI) {
-		if (TrickShotGI->StartMusicForFirstTime) {
-			TrickShotGI->StartMusicForFirstTime = false;
-			UAudioComponent* ac = nullptr;
-			UE_LOG(LogTemp, Warning, TEXT("m_Checkpoint = %d"), TrickShotGI->m_Checkpoint)
-			switch (TrickShotGI->m_Checkpoint) {
-			case 0: ac = UGameplayStatics::SpawnSound2D(this, Song1, 0.4f, 1.0f, 0.0f, nullptr, true, true);  break;
-			case 1: ac = UGameplayStatics::SpawnSound2D(this, Song2, 0.4f, 1.0f, 0.0f, nullptr, true, true);  break;
-			case 2: ac = UGameplayStatics::SpawnSound2D(this, Song3, 0.4f, 1.0f, 0.0f, nullptr, true, true);  break;
-			case 3: ac = UGameplayStatics::SpawnSound2D(this, Song4, 0.4f, 1.0f, 0.0f, nullptr, true, true);  break;
-			case 4: ac = UGameplayStatics::SpawnSound2D(this, Song5, 0.4f, 1.0f, 0.0f, nullptr, true, true);  break;
-			}
-			if (ac)
-				ac->FadeIn(3.0f, 1.0, 0.0, EAudioFaderCurve::Linear);
-
-			TrickShotGI->SaveCurrentSong(ac);
-		} else {
-			UE_LOG(LogTemp, Warning, TEXT("Music not loaded a second time"))
-		}
-	} else {
-		UE_LOG(LogTemp, Warning, TEXT("TrickShot Game instance failed!"))
-	}
+	// Load new music or continue playing current music
+	LoadMusic();
 }
 
 void ATrickShotGameMode::EnableInputAndLoadLevel()

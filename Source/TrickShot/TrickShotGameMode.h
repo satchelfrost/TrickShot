@@ -27,6 +27,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "GameMode")
 	bool CheckPointReached();
 
+	UFUNCTION(BlueprintCallable, Category = "Checkpoint")
+	int32 GetCurrentCheckpoint();
+
+	void LoadMusic();
+
 	UFUNCTION(BlueprintCallable, Category = "GameMode")
 	void PauseToReadMsg(float PauseTime);
 
@@ -65,7 +70,7 @@ private:
 
 	FTimerHandle TimerHandle_PauseBeforeLevel;
 
-	const int32 NUM_LEVELS_TO_GET_CCKPNT = 5;
+	const int32 NUM_LVLS_FOR_CHKPNT = 6;
 
 	void EnableInputAndLoadLevel();
 };
