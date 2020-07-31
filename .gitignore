@@ -94,3 +94,6 @@ WindowsNoEditor/*
 
 # Extra assets I was just testing out
 Content/TwinmotionMaterials
+
+# remove space backgrounds
+Content/Sky_Content/*
