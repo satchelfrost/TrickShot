@@ -17,6 +17,7 @@ class TRICKSHOT_API UTrickShotGameInstance : public UGameInstance
 public:
 	UTrickShotGameInstance();
 
+	// Used to see if we want to restart the music or let it keep playing
 	bool StartMusicForFirstTime;
 
 	// Current Song playing, used to fade in and out
@@ -24,12 +25,6 @@ public:
 	UAudioComponent* CurrentSong;
 
 public:
-	UPROPERTY(BlueprintReadOnly, Category = "Checkpoint")
-	int32 m_Checkpoint;
-
-	UFUNCTION(BlueprintCallable, Category = "Checkpoint")
-	void IncrementCheckpoint();
-
 	UFUNCTION(BlueprintCallable, Category = "Music")
 	void FadeCurrentSong();
 
@@ -38,6 +33,9 @@ public:
 
 	// Used to store audio component across level transitions
 	void SaveCurrentSong(UAudioComponent* ac) { CurrentSong = ac; }
+
+	UPROPERTY(BlueprintReadWrite, Category = "Checkpoint")
+	int32 m_Checkpoint;
 
 private:
 	

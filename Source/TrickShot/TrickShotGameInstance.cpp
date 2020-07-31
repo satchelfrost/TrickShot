@@ -11,12 +11,6 @@ UTrickShotGameInstance::UTrickShotGameInstance()
 	m_Checkpoint = 0;
 }
 
-void UTrickShotGameInstance::IncrementCheckpoint()
-{
-	m_Checkpoint++;
-	StartMusicForFirstTime = true;
-}
-
 void UTrickShotGameInstance::FadeCurrentSong()
 {
 	if (CurrentSong)
@@ -33,4 +27,6 @@ void UTrickShotGameInstance::KillCurrentSong()
 		CurrentSong->SetVolumeMultiplier(0.0f);
 	else
 		UE_LOG(LogTemp, Warning, TEXT("Tried to kill song that doesn't exist"))
+
+	StartMusicForFirstTime = true;
 }
