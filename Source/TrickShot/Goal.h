@@ -39,15 +39,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
 	USoundBase* GoalIncomplete;
 
-	// Testing out rotation
-	//UPROPERTY(EditDefaultsOnly, Category = "Movement")
-	//float YawValue;
-
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Goal")
 	bool bGoalReady;
-
-
-public:
-	//virtual void Tick(float DeltaSeconds) override;
 };

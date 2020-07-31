@@ -8,8 +8,6 @@
 
 AGoal::AGoal()
 {
-	//PrimaryActorTick.bCanEverTick = true;
-
 	// Initialize the overlap component
 	OverlapComp = CreateDefaultSubobject<UBoxComponent>(TEXT("OverlapComp"));
 	OverlapComp->SetBoxExtent(FVector(200.0f, 200.0f, 50.0f));
@@ -52,12 +50,3 @@ bool AGoal::AreAllPanelsSet()
 
 	return PanelReady == Actors.Num();
 }
-
-//void AGoal::Tick(float DeltaSeconds)
-//{
-//	Super::Tick(DeltaSeconds);
-//
-//	FQuat QuatRotation = FQuat(FRotator(0.f, YawValue * DeltaSeconds, 0.f));
-//
-//	AddActorLocalRotation(QuatRotation);
-//}
