@@ -54,12 +54,17 @@ void AButtonTimer::RevertChange()
 		if (PanelName == Panel->PanelName)
 			Panel->TeleLocationTwo();
 	}
+
+	// Play sound for button reset 
+	UGameplayStatics::PlaySound2D(this, ButtonResetSound);
 }
 
 void AButtonTimer::HandleOverlap(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	ATrickShotProjectile* ball = Cast<ATrickShotProjectile>(OtherActor);
 	if (ball) {
+		// Play sound when ball first hits button
+		UGameplayStatics::PlaySound2D(this, ButtonSetSound);
 
 		// specify behavior for the change of other actor 
 		TArray<AActor*> Actors;

@@ -12,7 +12,7 @@ void AButtonBouncePanel::BeginPlay()
 	Location2.Y = m_Y;
 	Location2.Z = m_Z;
 
-	// Teleport to location 1 
+	// Teleport to location 2 
 	TeleLocationTwo();
 }
 

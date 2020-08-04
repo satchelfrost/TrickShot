@@ -30,6 +30,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Time")
 	float TimeForButtonReset;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
+	USoundBase* ButtonSetSound;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
+	USoundBase* ButtonResetSound;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Name")
 	FString PanelName;
 
