@@ -1,7 +1,7 @@
 # Cyber TrickShot
 A game where you attempt crazy trick shots with a monsterous ping pong ball! Currently no VR support, yet.
 
-![](GamePlay.gif)
+![](GamePlay2.gif)
 
 ### Playable build 
 Playable build only works for Windows. You can alternatively build from source.
