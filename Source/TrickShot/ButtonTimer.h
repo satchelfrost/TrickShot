@@ -39,14 +39,18 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Name")
 	FString PanelName;
 
-	void RevertChange();
+	// Change panel back to original location and reset button color
+	virtual void RevertChange();
+
+	// Timer for button reset
+	FTimerHandle TimerHandle_ButtonTimer;
 
 public:	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	UStaticMeshComponent* ButtonComp;
 
 	UFUNCTION()
-    void HandleOverlap(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+    virtual void HandleOverlap(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 	// button is either red or green
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gameplay")
@@ -56,5 +60,4 @@ public:
 	void UpdateColor();
 
 private:
-	FTimerHandle TimerHandle_ButtonTimer;
 };

@@ -33,7 +33,6 @@ AButtonTimer::AButtonTimer()
 void AButtonTimer::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 void AButtonTimer::RevertChange()
