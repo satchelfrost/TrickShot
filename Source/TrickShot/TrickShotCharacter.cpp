@@ -1,7 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "Goal.h"
 #include "TrickShotCharacter.h"
+#include "Goal.h"
 #include "TrickShotProjectile.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
