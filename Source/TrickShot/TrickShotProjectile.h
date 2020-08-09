@@ -41,6 +41,8 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+	void DestroyWithFlames();
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
 	USoundBase* PingPongSound;

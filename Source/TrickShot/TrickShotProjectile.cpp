@@ -96,3 +96,10 @@ void ATrickShotProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
+
+void ATrickShotProjectile::DestroyWithFlames()
+{
+	Destroy();
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Explosion, GetActorLocation());
+	UGameplayStatics::PlaySound2D(this, ExplosionSound);
+}
