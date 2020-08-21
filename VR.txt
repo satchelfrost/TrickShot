@@ -1,0 +1,1 @@
+This is a branch that will be the VR port of the game. The target platform is Oculus Quest, but support could be added with other VR headsets.
