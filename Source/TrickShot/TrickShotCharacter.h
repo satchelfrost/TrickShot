@@ -104,6 +104,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void LeftMouseButtonPressed();
 
+	UFUNCTION(BlueprintCallable)
+	void RightVRTriggerPressed();
+
 protected:
 	
 	/** Fires a projectile. */

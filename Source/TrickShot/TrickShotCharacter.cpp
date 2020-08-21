@@ -198,8 +198,39 @@ void ATrickShotCharacter::LeftMouseButtonPressed()
 		bVelocityCharging = true;
 		UpdateProgressBar();
 	}
-	//change
-	//change2
+}
+
+void ATrickShotCharacter::RightVRTriggerPressed()
+{
+	// Increment or decrement the velocity scalar
+	if (bVelocityCharging) {
+		VelocityScalar += 0.05;
+		if (VelocityScalar > 1.01) {
+			VelocityScalar = 1.0;
+			bVelocityCharging = false;
+		}
+	} else {
+		VelocityScalar -= 0.05;
+		if (VelocityScalar < 0.01) {
+			VelocityScalar = 0.0;
+			bVelocityCharging = true;
+		}
+	}
+
+	// Log that to the console
+	//UE_LOG(LogTemp, Warning, TEXT("Velocity scalar: %f"), VelocityScalar)
+
+	// If left mouse button down call delay for 0.2 seconds, and start over
+	APlayerController* PC = Cast<APlayerController>(GetWorld()->GetFirstPlayerController());
+	if (PC->IsInputKeyDown(EKeys::OculusTouch_Right_Trigger_Click)) {
+		UpdateProgressBar();
+		GetWorld()->GetTimerManager().ClearTimer(TimerHandle_VelocityCharge);
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle_VelocityCharge, this, &ATrickShotCharacter::RightVRTriggerPressed, 0.03);
+	} else {
+		VelocityScalar = 0;
+		bVelocityCharging = true;
+		UpdateProgressBar();
+	}
 }
 
 void ATrickShotCharacter::OnFire()
