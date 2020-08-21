@@ -198,6 +198,7 @@ void ATrickShotCharacter::LeftMouseButtonPressed()
 		bVelocityCharging = true;
 		UpdateProgressBar();
 	}
+	//change
 }
 
 void ATrickShotCharacter::OnFire()
