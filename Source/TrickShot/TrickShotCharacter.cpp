@@ -199,6 +199,7 @@ void ATrickShotCharacter::LeftMouseButtonPressed()
 		UpdateProgressBar();
 	}
 	//change
+	//change2
 }
 
 void ATrickShotCharacter::OnFire()
