@@ -179,9 +179,27 @@ FString ATrickShotGameMode::GetEndOfLevelMessage()
 	case  7: Msg = "That was just a practice run.";        break;
 	case  8: Msg = "Try this next one on for size!";       break;
 	case  9: Msg = "Still... you know nothing.";           break;
-	case 10: Msg = "Prepare to be powned.";                break;
+	case 10: Msg = "Prepare to be owned.";                 break;
 	case 11: Msg = "Well well well... Try This!";          break;
 	case 12: Msg = "Checkpoint Reached.";                  break;
+	case 13: Msg = "I mean you need practice.";            break;
+	case 14: Msg = "You think you're so smart!";           break;
+	case 15: Msg = "You still don't have my respect.";     break;
+	case 16: Msg = "And you persist why?";                 break;
+	case 17: Msg = "I'm tired of messing around.";         break;
+	case 18: Msg = "Checkpoint Reached...";                break;
+	case 19: Msg = "Trendy..";                             break;
+	case 20: Msg = "Figure this next one out.";            break;
+	case 21: Msg = "Okay you're smarter than you look.";   break;
+	case 22: Msg = "Why are you still here?";              break;
+	case 23: Msg = "So you've got tenacity.";              break;
+	case 24: Msg = "Checkpoint Reached.";                  break;
+	case 25: Msg = "They can't all be hard.";              break;
+	case 26: Msg = "Tricky eh?";                           break;
+	case 27: Msg = "Okay you make the levels then!";       break;
+	case 28: Msg = "Simple yet difficult.";                break;
+	case 29: Msg = "Gaining my respect.";                  break;
+	case 30: Msg = "That was for funzies.";                break;
 	default: Msg = "Default Message";                      break;
 	}
 
