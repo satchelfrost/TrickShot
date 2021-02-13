@@ -22,3 +22,6 @@ To build from souce:
 2. Right-click on the .uproject file and click generate project files.
 3. It should have generated a .sln (a.k.a. Visual Studio Solution). Right-click, and open with Visual Studio 2019.
 4. Once project is loaded, compile & run :).
+
+Playthrough:
+https://youtu.be/c4yaTckN-F8
